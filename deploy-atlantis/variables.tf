@@ -13,7 +13,7 @@ variable "alb_ingress_cidr_blocks" {
 variable "github_token" {
   description = "Github token"
   type        = string
-  default     = "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"
+  default     = ""
 }
 
 variable "github_owner" {
