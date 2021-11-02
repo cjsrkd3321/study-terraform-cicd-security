@@ -1,0 +1,17 @@
+# repos.yaml
+repos:
+  - id: /.*/
+    branch: /.*/
+    workflow: opa-workflow
+    allowed_overrides: [apply_requirements, workflow]
+    allow_custom_workflows: true
+    allowed_workflows: [opa-workflow]
+
+workflows:
+  opa-workflow:
+    plan:
+      steps:
+        - init
+        - plan
+        - run: terraform$ATLANTIS_TERRAFORM_VERSION show -json $PLANFILE >"${PROJECT_NAME}_${PULL_NUM}_$(git rev-parse HEAD).json"
+        - run: aws s3 cp "${PROJECT_NAME}_${PULL_NUM}_$(git rev-parse HEAD).json" s3://atlantis-access-logs-000663531752-ap-northeast-1/ >/dev/null
